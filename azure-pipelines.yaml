@@ -1,34 +1,16 @@
 trigger:
-  - master
+  - main
+
+pr: none
 
 pool:
   vmImage: ubuntu-latest
 
-steps:
-  - task: DownloadSecureFile@1
-    name: key
-    displayName: 'Download GPG'
-    inputs:
-      secureFile: 'key.asc'
+resources:
+  repositories:
+    - repository: templates
+      type: git
+      name: DevOps/azure-pipeline-templates
 
-  - script: |
-      gpg --import $(key.secureFilePath)
-
-  - task: DownloadSecureFile@1
-    name: settings
-    displayName: 'Download settings.xml'
-    inputs:
-      secureFile: 'settings.xml'
-
-  - task: Maven@3
-    inputs:
-      mavenPomFile: 'pom.xml'
-      goals: 'clean deploy'
-      options: '--settings $(settings.secureFilePath)'
-      publishJUnitResults: false
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.17'
-      mavenVersionOption: 'Default'
-      mavenAuthenticateFeed: false
-      effectivePomSkip: false
-      sonarQubeRunAnalysis: false
+extends:
+  template: pipeline-be-library.yaml@templates
