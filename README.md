@@ -64,7 +64,16 @@ public class TestController {
             <scope>provided</scope>
         </dependency>
 ```
-3. Then to enable the log4j2 programatic configuration provided by the library, you need to tell Log4J where to find the config plugins. 
+3. Add the cp-logging-library dependency to your pom.xml
+```xml
+        <dependency>
+            <groupId>com.cleverpine</groupId>
+            <artifactId>cp-logging-library</artifactId>
+            <version>LOGGING_LIBRARY_VERSION</version>
+        </dependency>
+```
+
+4. Then to enable the log4j2 programatic configuration provided by the library, you need to tell Log4J where to find the config plugins. 
 In a spring application this needs to happen before the Spring context is initialized. When the log4J Plugin class is in the classpath of the project, 
 the configuration happen automatically. However, when the plugin is in a library, it needs to be explicitly added. Just specify the packages which have to be scanned with a
 Component Scan annotation.
@@ -72,7 +81,7 @@ Component Scan annotation.
 @ComponentScan(basePackages = {"com.cleverpine.springlogginglibrary.*", "<your application main package>"})
 ```
 
-3. Finally you need to enable all additional Spring features of the logging library. Just add the @EnableCPLogging annotation above the main application class. 
+5. Finally you need to enable all additional Spring features of the logging library. Just add the @EnableCPLogging annotation above the main application class. 
 ```java
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.cleverpine.springlogginglibrary.*", "<your application main package>"})
@@ -86,22 +95,29 @@ public class Application {
 }
 ```
 
-4. Ensure you have set the "spring.application.name" property in the application.properties or application.yaml. This name will be used as a serviceId in the log messages.
+6. Ensure you have set the "spring.application.name" property in the application.properties or application.yaml. This name will be used as a serviceId in the log messages.
 ```properties
 spring.application.name=library-test
 ```
-5. Test the configuration. When you run the application, you should see the starting logs in the following format: 
+7. Test the configuration. When you run the application, you should see the starting logs in the following format: 
 ```
 2023-01-23 09:03:35.022[][library-test][org.springframework.boot.StartupInfoLogger][INFO] - Started LibraryTestApplication in 0.612 seconds (process running for 0.989)
 ```
 
-6. Test the TraceId interceptor. When you trigger a http request to the app with a "traceId" header, it should automatically add it to the logs of the current request. 
+8. Test the TraceId interceptor. When you trigger a http request to the app with a "traceId" header, it should automatically add it to the logs of the current request. 
 When you make a request without the header, the traceId will be created by the interceptor.
 ```
 // traceId header = 123456
 2023-01-23 09:03:46.345[123456][library-test][com.cleverpine.librarytest.TestController][INFO] - This is a test message in the controller
 // No traceId header
 2023-01-23 09:03:55.761[13f34c37-a375-4403-88b1-7e79e00cddf1][library-test][com.cleverpine.librarytest.TestController][INFO] - This is a test message in the controller
+```
+### Logstash Configuration
+To enable log sending via **TCP** to **Logstash**, you need to set up the following properties in the application.properties or application.yaml file:
+```properties
+logging.logstash.enabled=true
+logging.logstash.host=localhost
+logging.logstash.port=5000
 ```
 
 ### Filters 
