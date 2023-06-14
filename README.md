@@ -113,11 +113,55 @@ When you make a request without the header, the traceId will be created by the i
 2023-01-23 09:03:55.761[13f34c37-a375-4403-88b1-7e79e00cddf1][library-test][com.cleverpine.librarytest.TestController][INFO] - This is a test message in the controller
 ```
 ### Logstash Configuration
-To enable log sending via **TCP** to **Logstash**, you need to set up the following properties in the application.properties or application.yaml file:
+The Logstash appender sends the logs via TCP to a Logstash instance in **JSON Format**.
+<p> To enable log sending via **TCP** to **Logstash**, you need to set up the following properties in the application.properties or application.yaml file:</p>
+
 ```properties
 logging.logstash.enabled=true
-logging.logstash.host=localhost
-logging.logstash.port=5000
+logging.logstash.host=<logstash host>
+logging.logstash.port=<logstash port>
+```
+To add additional properties which you want to send in the JSON message, you can add them in the application.properties or application.yaml file. They will be automatically mapped
+in both the main Thread Context and its child threads, as well as all the request threads:
+```properties
+logging.logstash.properties.<property name>=<property value>
+
+logging.logstash.properties.stage=dev
+logging.logstash.properties.appId=<some app id>
+```
+
+**Example JSON received by logstash:**
+```json
+{
+   "message": "Method TestController.testController() executed in 4 ms",
+   "threadId": 43,
+   "loggerName": "com.cleverpine.springlogginglibrary.aop.PerformanceMeasureAspect",
+   "instant": {
+      "epochSecond": 1686737560,
+      "nanoOfSecond": 9782000
+   },
+   "loggerFqcn": "org.apache.logging.log4j.spi.AbstractLogger",
+   "@timestamp": "2023-06-14T10:12:40.033038845Z",
+   "contextMap": {
+      "stage": "dev",
+      "appName": "example-app-name",
+      "traceId": "e1b97a94-9532-4dd8-aac1-b2d3927835c8",
+      "serviceId": "library-test",
+      "appId": "some-example-app-id"
+   },
+   "@version": "1",
+   "thread": "http-nio-8080-exec-2",
+   "source": {
+      "class": "com.cleverpine.springlogginglibrary.aop.PerformanceMeasureAspect",
+      "classLoaderName": "app",
+      "line": 23,
+      "method": "measurePerformance",
+      "file": "PerformanceMeasureAspect.java"
+   },
+   "threadPriority": 5,
+   "endOfBatch": false,
+   "level": "INFO"
+}
 ```
 
 ### Filters 
