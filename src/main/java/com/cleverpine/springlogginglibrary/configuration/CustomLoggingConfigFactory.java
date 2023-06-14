@@ -16,15 +16,16 @@ import org.apache.logging.log4j.core.config.builder.api.RootLoggerComponentBuild
 import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
 import org.apache.logging.log4j.core.config.plugins.Plugin;
 
+
+import static com.cleverpine.springlogginglibrary.util.Constants.DEFAULT_LOGGING_PATTERN;
+import static com.cleverpine.springlogginglibrary.util.Constants.STDOUT_APPENDER_NAME;
+
 @Plugin(
         name = "CustomLoggingConfigFactory",
         category = ConfigurationFactory.CATEGORY
 )
 @Order(Integer.MAX_VALUE)
 public class CustomLoggingConfigFactory extends ConfigurationFactory {
-
-    private static final String DEFAULT_LOGGING_PATTERN = "%d{yyyy-MM-dd HH:mm:ss.SSS}[%X{traceId}][%X{serviceId}][%C][%p] - %msg%n%throwable";
-    private static final String STDOUT_APPENDER_NAME = "Stdout";
 
     @Override
     public Configuration getConfiguration(final LoggerContext loggerContext, final ConfigurationSource source) {
@@ -54,12 +55,11 @@ public class CustomLoggingConfigFactory extends ConfigurationFactory {
     }
 
     private static void configurePredefinedAppenders(ConfigurationBuilder<BuiltConfiguration> builder){
-        List<AppenderComponentBuilder> appenders = new ArrayList<>();
-        var consoleAppender = builder.newAppender(STDOUT_APPENDER_NAME, "Console");
         var defaultLayout = builder.newLayout("PatternLayout")
                 .addAttribute("pattern", DEFAULT_LOGGING_PATTERN);
-        consoleAppender.add(defaultLayout);
 
+        var consoleAppender = builder.newAppender(STDOUT_APPENDER_NAME, "Console");
+        consoleAppender.add(defaultLayout);
         builder.add(consoleAppender);
     }
 
