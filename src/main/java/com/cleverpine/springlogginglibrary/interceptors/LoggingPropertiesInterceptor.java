@@ -12,7 +12,7 @@ import static com.cleverpine.springlogginglibrary.util.Constants.SERVICE_ID;
 import static com.cleverpine.springlogginglibrary.util.Constants.TRACE_ID;
 
 @Component
-public class ServiceAndTraceIdLoggingInterceptor implements HandlerInterceptor {
+public class LoggingPropertiesInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
@@ -24,6 +24,7 @@ public class ServiceAndTraceIdLoggingInterceptor implements HandlerInterceptor {
 
         ThreadContext.put(SERVICE_ID, loggingContext.getServiceId());
         ThreadContext.put(TRACE_ID, loggingContext.getTraceId());
+        loggingContext.getProperties().forEach(ThreadContext::put);
 
         return true;
     }

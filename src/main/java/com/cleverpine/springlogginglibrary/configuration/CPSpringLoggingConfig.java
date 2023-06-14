@@ -1,6 +1,6 @@
 package com.cleverpine.springlogginglibrary.configuration;
 
-import com.cleverpine.springlogginglibrary.interceptors.ServiceAndTraceIdLoggingInterceptor;
+import com.cleverpine.springlogginglibrary.interceptors.LoggingPropertiesInterceptor;
 import com.cleverpine.springlogginglibrary.models.LoggingInfoContext;
 import org.apache.logging.log4j.ThreadContext;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +20,7 @@ public class CPSpringLoggingConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new ServiceAndTraceIdLoggingInterceptor());
+        registry.addInterceptor(new LoggingPropertiesInterceptor());
     }
 
     @Bean
