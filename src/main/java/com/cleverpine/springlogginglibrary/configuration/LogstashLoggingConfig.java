@@ -1,33 +1,21 @@
 package com.cleverpine.springlogginglibrary.configuration;
 
 import com.cleverpine.springlogginglibrary.models.LoggingInfoContext;
+import com.cleverpine.springlogginglibrary.util.Constants;
 import jakarta.annotation.PostConstruct;
 import java.util.Map;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
-import org.apache.logging.log4j.core.Appender;
-import org.apache.logging.log4j.core.Layout;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.appender.SocketAppender;
-import org.apache.logging.log4j.core.config.AppenderRef;
-import org.apache.logging.log4j.core.config.Configuration;
-import org.apache.logging.log4j.core.config.ConfigurationFactory;
-import org.apache.logging.log4j.core.config.ConfigurationSource;
-import org.apache.logging.log4j.core.config.LoggerConfig;
-import org.apache.logging.log4j.core.config.builder.api.AppenderComponentBuilder;
-import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilder;
-import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
-import org.apache.logging.log4j.core.layout.JsonLayout;
-import org.apache.logging.log4j.core.layout.PatternLayout;
+import org.apache.logging.log4j.layout.template.json.JsonTemplateLayout;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-
-import static com.cleverpine.springlogginglibrary.util.Constants.DEFAULT_LOGGING_PATTERN;
 import static com.cleverpine.springlogginglibrary.util.Constants.LOGSTASH_APPENDER_NAME;
 import static com.cleverpine.springlogginglibrary.util.Constants.RECONNECT_DELAY;
 
@@ -61,14 +49,13 @@ public class LogstashLoggingConfig {
         properties.forEach(loggingInfoContext::putProperty);
 
         //Create the new appender
-        var layout = JsonLayout.newBuilder()
-                .setLocationInfo(true)
-                .setProperties(true)
-                .setPropertiesAsList(false)
-                .setIncludeStacktrace(true)
-                .setEventEol(true)
-                .setCompact(true)
+        var layout = JsonTemplateLayout.newBuilder()
+                .setConfiguration(configuration)
+                .setLocationInfoEnabled(true)
+                .setEventTemplateUri("classpath:logstash-log-template.json")
+                .setStackTraceEnabled(true)
                 .build();
+
 
         var socketAppender = SocketAppender.newBuilder()
                 .setHost(logstashHost)
