@@ -6,7 +6,7 @@
 
     <groupId>com.cleverpine</groupId>
     <artifactId>cp-logging-library</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.7</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -80,6 +80,11 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-layout-template-json</artifactId>
             <version>${log4j.version}</version>
         </dependency>
     </dependencies>
