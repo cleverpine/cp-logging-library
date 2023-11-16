@@ -6,7 +6,7 @@
 
     <groupId>com.cleverpine</groupId>
     <artifactId>cp-logging-library</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.8</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -15,18 +15,18 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <log4j.version>2.20.0</log4j.version>
         <spring.version>6.0.7</spring.version>
-        <spring.boot.version>3.0.7</spring.boot.version>
+        <spring.boot.version>3.1.5</spring.boot.version>
         <junit.version>5.9.2</junit.version>
         <mockito.version>4.11.0</mockito.version>
         <aspectj.version>1.9.19</aspectj.version>
         <snakeyaml.version>2.0</snakeyaml.version>
 
-
-        <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
-        <maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
-        <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
+        <!-- Plugins -->
+        <maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
+        <maven-javadoc-plugin.version>3.6.2</maven-javadoc-plugin.version>
+        <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
-        <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
         <!-- Uncomment when running locally -->
 <!--        <gpg.skip>true</gpg.skip>-->
 
@@ -162,7 +162,7 @@
 
     <name>CP Logging Library</name>
     <description>Library for Spring Framework projects which sets a logging standard</description>
-    <url>https://dev.azure.com/cleverpine/JavaLibs/_git/cp-logging-library</url>
+    <url>https://github.com/cleverpine/cp-logging-library</url>
 
     <licenses>
         <license>
@@ -192,9 +192,9 @@
     </distributionManagement>
 
     <scm>
-        <connection>https://cleverpine@dev.azure.com/cleverpine/JavaLibs/_git/cp-logging-library</connection>
-        <developerConnection>git@ssh.dev.azure.com:v3/cleverpine/JavaLibs/cp-logging-library</developerConnection>
-        <url>https://dev.azure.com/cleverpine/JavaLibs/_git/cp-logging-library</url>
+        <connection>https://github.com/cleverpine/cp-logging-library</connection>
+        <developerConnection>git@github.com:cleverpine/cp-logging-library.git</developerConnection>
+        <url>https://github.com/cleverpine/cp-logging-library</url>
     </scm>
 
     <profiles>
